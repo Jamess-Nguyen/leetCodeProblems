@@ -1,0 +1,41 @@
+#include <map>
+
+class Solution {
+public:
+    bool isValid(string s) {
+        if (s.size() % 2 != 0)   return false; //Checks for case of odd amount of brackets
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[')
+            {
+                toPop.push_back(s[i]);
+                current = s[i];
+            }
+            else
+            {
+                if (parentheses[current] == s[i])
+                {
+                    toPop.pop_back(); //If matching pair is found will remove left bracket from vector
+                    current = toPop.size() != 0 ? toPop[toPop.size() - 1] : current = '0'; // Sets current
+                    // to the most recently found left bracket; if recent left brackets will == 0
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        if (toPop.size() > 0)    return false; //Checks for case of only left brackets
+        return true;
+    }
+
+private:
+    std::map<char, char> parentheses{
+        {'(',')'},
+        {'[', ']'},
+        {'{', '}'}
+    };
+    std::vector<char> toPop; //Keeps track of left brackets
+    char current; //Holds the most recent bracket. If == 0, then all brackets have pairs
+};
